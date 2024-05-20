@@ -1,5 +1,5 @@
 // Animate class
-export class Animation {
+export class PathAnimation {
     constructor(status, row, col) {
         this.status = status,
         this.row = row,
@@ -77,23 +77,23 @@ export function boundaryDriver(gridState, boundaryPattern){
     
 }
 
-function constructBoundaryPrefix( gridState ){
+export function constructBoundaryPrefix( gridState ){
 
     const { rows, cols, starting_coords, ending_coords } = gridState
     const sequence_prefix = []
     
     // remove existing starting & goal
-    sequence_prefix.push(new Animation('w0_unvisited', starting_coords[0], starting_coords[1]))
-    sequence_prefix.push(new Animation('w0_unvisited', ending_coords[0], ending_coords[1]))
+    sequence_prefix.push(new PathAnimation('w0_unvisited', starting_coords[0], starting_coords[1]))
+    sequence_prefix.push(new PathAnimation('w0_unvisited', ending_coords[0], ending_coords[1]))
     
     // add new starting and goal nodes
-    sequence_prefix.push(new Animation('start', 1, 0))
-    sequence_prefix.push(new Animation('goal', rows - 2, cols - 1))
+    sequence_prefix.push(new PathAnimation('start', 1, 0))
+    sequence_prefix.push(new PathAnimation('goal', rows - 2, cols - 1))
 
     // add border boundary - top & bottom walls
     for (let i = 0; i < cols; i++){
-        sequence_prefix.push(new Animation('boundary', 0, i))
-        sequence_prefix.push(new Animation('boundary', rows - 1, cols - 1 - i))
+        sequence_prefix.push(new PathAnimation('boundary', 0, i))
+        sequence_prefix.push(new PathAnimation('boundary', rows - 1, cols - 1 - i))
     }
 
     // add border boundary - side walls 
@@ -101,13 +101,13 @@ function constructBoundaryPrefix( gridState ){
         if (i === 1){
             continue
         }
-        sequence_prefix.push(new Animation('boundary', i, 0))
-        sequence_prefix.push(new Animation('boundary', rows - 1 - i, cols - 1))
+        sequence_prefix.push(new PathAnimation('boundary', i, 0))
+        sequence_prefix.push(new PathAnimation('boundary', rows - 1 - i, cols - 1))
     }
     return sequence_prefix
 }
 
-// recursive division
+
 function recursiveDivison(gridState, horizontal_start){
     let animation_sequence = []
     
@@ -132,7 +132,6 @@ function recursiveDivison(gridState, horizontal_start){
         [row - 1, row, row + 1].forEach(r => passage_grid[r][col] = true);
     }
       
-
     // helper function to draw a line dividing the given sextion of the grid
     function divide(rStart, rEnd, cStart, cEnd, horizontal, last_passage){
         if (rEnd - rStart < 4 || cEnd - cStart < 4){
@@ -153,7 +152,7 @@ function recursiveDivison(gridState, horizontal_start){
             for (let i = cStart; i < cEnd; i++){
                 // confirm that this isnt the passage or part of another passage
                 if (i !== passage_col && !passage_grid[barrier_row][i]){
-                    animation_sequence.push(new Animation('boundary', barrier_row, i))
+                    animation_sequence.push(new PathAnimation('boundary', barrier_row, i))
                     updatedGrid[barrier_row][i] = 'boundary'
                 }
             }
@@ -173,7 +172,7 @@ function recursiveDivison(gridState, horizontal_start){
             // animations & grid updates to implement barrier & passage
             for (let i = rStart; i < rEnd; i++){
                 if (i !== passage_row && !passage_grid[i][barrier_col]){
-                    animation_sequence.push(new Animation('boundary', i, barrier_col))
+                    animation_sequence.push(new PathAnimation('boundary', i, barrier_col))
                     updatedGrid[i][barrier_col] = 'boundary'
                 }
             }

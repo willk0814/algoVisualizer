@@ -21,7 +21,7 @@ export default function PathfinderControls({
       }}
       initial='initial'
       animate='animate'
-      className='flex flex-col justify-center space-y-2 p-2'>
+      className='flex flex-col justify-center item-start space-y-2 p-2'>
       
       <div className='flex flex-col space-y-1'>
         <h1 className='text-md'>Grid Type:</h1>

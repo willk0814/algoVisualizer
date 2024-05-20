@@ -7,7 +7,7 @@ import PathfindingContainer from '../pathfindingComponents/PathfindingContainer'
 
 export default function PageContainer() {
 
-  const [showSorter, setShowSorter] = useState(false)
+  const [showSorter, setShowSorter] = useState(true)
 
   const handleToggleView = (id) => {
     setShowSorter(id === 'sorter')
