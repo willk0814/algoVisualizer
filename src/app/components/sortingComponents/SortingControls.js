@@ -18,7 +18,7 @@ export default function SortingControls({ handleGenerateArray }) {
         <div className='flex flex-col space-y-1'>
             <button
                 onClick={() => handleGenerateArray()}
-                className='bg-gray-700 p-2 rounded-lg text-xl disabled:bg-gray-400'>
+                className='bg-gray-700 p-2 rounded-lg text-md disabled:bg-gray-400'>
                 New Array
             </button>
         
@@ -30,9 +30,9 @@ export default function SortingControls({ handleGenerateArray }) {
         <div className='w-full h-[3px] bg-gray-700 rounded-full'></div>
 
         <div className='flex flex-col space-y-1'>
-            <h1 className='text-xl'>Sorting Algo:</h1>
+            <h1 className='text-md'>Sorting Algo:</h1>
             <select
-                className='bg-gray-700 p-2 rounded-lg text-xl'>
+                className='bg-gray-700 p-2 rounded-lg text-md'>
                 <option>Bubble</option>
                 <option>Heap</option>
                 <option>Merge</option>
@@ -40,7 +40,7 @@ export default function SortingControls({ handleGenerateArray }) {
             </select>
         </div>
         <button 
-            className='bg-gray-700 p-2 rounded-lg text-xl'>
+            className='bg-gray-700 p-2 rounded-lg text-md'>
                 Sort
         </button>
         <div>

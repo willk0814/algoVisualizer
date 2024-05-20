@@ -21,7 +21,7 @@ export default function SortingContainer() {
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-full items-center justify-center bg-[#121212]'>
+    <div className='flex flex-col w-full h-full pt-20 justify-start items-center bg-[#121212]'>
         <motion.h1 
           variants={{
             initial: { opacity: 0, y: '-10px'},
@@ -34,7 +34,7 @@ export default function SortingContainer() {
           initial='initial'
           animate='animate'
           exit='initial'
-          className='text-8xl my-4'>Sorter</motion.h1>
+          className='text-6xl my-4'>Sorter</motion.h1>
 
         <div className='flex flex-row'>
           <SortingControls handleGenerateArray={generateNewArray}/>
@@ -54,7 +54,7 @@ export default function SortingContainer() {
                   <div
                     key={indx}
                     className='w-[8px] rounded-lg bg-gray-400'
-                    style={{height: `${value * 7}px`}}></div>
+                    style={{height: `${value * 5}px`}}></div>
 
               ))}
           </motion.div>

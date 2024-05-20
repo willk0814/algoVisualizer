@@ -1,8 +1,7 @@
 'use client'
-import React, { useState } from 'react'
-import { Animation } from '@/app/logic/pathfindingLogic/pathfindingLogic'
+import React from 'react'
 
-import { animate, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import GridCell from './GridCell'
 
 export default function PathfinderControls({ 
@@ -22,22 +21,24 @@ export default function PathfinderControls({
       }}
       initial='initial'
       animate='animate'
-      className='flex flex-col justify-center space-y-3 p-2'>
+      className='flex flex-col justify-center space-y-2 p-2'>
       
       <div className='flex flex-col space-y-1'>
-        <h1 className='text-xl'>Grid Type:</h1>
+        <h1 className='text-md'>Grid Type:</h1>
         <div className='flex flex-row space-x-1'>
           <button 
             onClick={() => handleGenerateGrid(true)}
             disabled={weighted}
-            className='bg-gray-700 p-2 rounded-lg text-xl disabled:bg-gray-400'>
+            className='bg-gray-700 p-2 rounded-lg text-md disabled:bg-gray-400'>
               Weighted</button>
           <button 
             onClick={() => handleGenerateGrid(false)}
             disabled={!weighted}
-            className='bg-gray-700 p-2 rounded-lg text-xl disabled:bg-gray-400'>
-              Unweighted</button>
-        </div>
+            className='bg-gray-700 p-2 rounded-lg text-md disabled:bg-gray-400'>
+              Unweighted
+          </button>
+      </div>
+
         <div>
           {!weighted? (
             <p className='max-w-[300px]'>In an unweighted grid or graph the 'cost' of traveling to each square or node is identical</p>
@@ -70,9 +71,9 @@ export default function PathfinderControls({
       <div className='w-full h-[3px] bg-gray-700 rounded-full'></div>
 
       <div className='flex flex-col space-y-1'>
-        <h1 className='text-xl'>Maze Type:</h1>
+        <h1 className='text-md'>Maze Type:</h1>
         <select
-          className='bg-gray-700 p-2 rounded-lg text-xl'>
+          className='bg-gray-700 p-2 rounded-lg text-md'>
           <option>Horizontal Division</option>
           <option>Vertical Division</option>
           <option>Flappy Bird</option>
@@ -80,16 +81,16 @@ export default function PathfinderControls({
       </div>
       <button 
         onClick={() => handleGenerateBoundary('h_div')}
-        className='bg-gray-700 p-2 rounded-lg text-xl'>Generate</button>
+        className='bg-gray-700 p-2 rounded-lg text-md'>Generate</button>
       <div>
           <p className='max-w-[300px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
         </div>
       <div className='w-full h-[3px] bg-gray-700 rounded-full'></div>
 
       <div className='flex flex-col space-y-1'>
-        <h1 className='text-xl'>Algorithm:</h1>
+        <h1 className='text-md'>Algorithm:</h1>
         <select
-          className='bg-gray-700 p-2 rounded-lg text-xl'>
+          className='bg-gray-700 p-2 rounded-lg text-md'>
           <option>BFS</option>
           <option>DFS</option>
           <option>Dijksta</option>
@@ -97,7 +98,7 @@ export default function PathfinderControls({
         </select>
       </div>
 
-      <button className='bg-gray-700 p-2 rounded-lg text-xl'>Find!</button>
+      <button className='bg-gray-700 p-2 rounded-lg text-md'>Find!</button>
       <div>
           <p className='max-w-[300px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
       </div>

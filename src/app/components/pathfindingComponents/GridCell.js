@@ -41,7 +41,7 @@ export default function GridCell({ state }) {
   return (
     <div 
         style={{backgroundColor: `${cellColor}`}}
-        className='h-[21px] w-[21px] flex items-center justify-center rounded-md'>
+        className='h-[19px] w-[19px] flex items-center justify-center rounded-md'>
         {state === 'boundary' && 
             <motion.div
                 variants={{
@@ -52,7 +52,7 @@ export default function GridCell({ state }) {
                 }}
                 initial='initial'
                 animate='animate'>
-                <IoClose size={20} color='#D2042D'/>
+                <IoClose size={17} color='#D2042D'/>
             </motion.div>}
     </div>
   )

@@ -15,7 +15,7 @@ export default function PathfindingContainer() {
     grid: [['']],
     gridMap: {},
     rows: 25, 
-    cols: 30,
+    cols: 35,
     starting_coords: [],
     ending_coords: [],
     weighted: false
@@ -89,8 +89,9 @@ export default function PathfindingContainer() {
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-full items-center justify-center bg-[#121212]'>
+    <div className='flex flex-col w-full h-full items-center justify-start pt-20 bg-[#121212]'>
         
+        {/* Title */}
         <motion.h1 
           variants={{
             initial: { opacity: 0, y: '-10px'},
@@ -103,7 +104,7 @@ export default function PathfindingContainer() {
           initial='initial'
           animate='animate'
           exit='initial'
-          className='text-8xl my-4'>Pathfinder</motion.h1>
+          className='text-6xl my-4'>Pathfinder</motion.h1>
           
         <div className='flex flex-row'>
             {/* Controls Container */}
@@ -125,7 +126,7 @@ export default function PathfindingContainer() {
               initial='initial'
               animate='animate'
               exit='initial'
-              className='flex flex-wrap w-min items-start'>
+              className='flex flex-col w-min space-y-1 justify-center'>
                 {gridState.grid.map((row, row_indx) => (
                   <div key={row_indx} className='flex flex-row space-x-1'>
                     {row.map((cell_state, col_indx) => (
