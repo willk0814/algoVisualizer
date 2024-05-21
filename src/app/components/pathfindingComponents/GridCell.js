@@ -31,7 +31,7 @@ export default function GridCell({ state }) {
         } else if (state === 'goal'){
             setCellColor('#30fc03')
         } else if (state === 'boundary'){
-            setCellColor('#fff')
+            setCellColor('#AA4A44')
         } else if (state === 'start'){
             setCellColor('#0394fc')
         } else {
@@ -52,7 +52,7 @@ export default function GridCell({ state }) {
                 }}
                 initial='initial'
                 animate='animate'>
-                <IoClose size={17} color='#D2042D'/>
+                <IoClose size={17} color='#fff'/>
             </motion.div>}
     </div>
   )
