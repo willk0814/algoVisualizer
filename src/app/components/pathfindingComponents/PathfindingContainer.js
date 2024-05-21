@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import PathfinderControls from './PathfinderControls'
 import GridCell from './GridCell'
-import { generateGrid, boundaryDriver, Animation } from '@/app/logic/pathfindingLogic/pathfindingLogic'
+import { generateGrid, boundaryDriver, pathfindingDriver } from '@/app/logic/pathfindingLogic/pathfindingLogic'
 
 import { motion } from 'framer-motion'
 
@@ -14,7 +14,7 @@ export default function PathfindingContainer() {
   const [gridState, setGridState] = useState ({
     grid: [['']],
     gridMap: {},
-    rows: 25, 
+    rows: 22, 
     cols: 35,
     starting_coords: [],
     ending_coords: [],
@@ -24,6 +24,12 @@ export default function PathfindingContainer() {
   // Generate animation sequence based on boundary
   const generateBoundaryPattern = (boundaryPattern) => {
     const { animation_sequence } = boundaryDriver(gridState, boundaryPattern)
+    renderAnimationSequence(animation_sequence)
+  }
+
+  // Find a path
+  const generatePath = (algo_id) => {
+    const animation_sequence = pathfindingDriver(algo_id, gridState)
     renderAnimationSequence(animation_sequence)
   }
 
@@ -65,11 +71,12 @@ export default function PathfindingContainer() {
   // Function to generate a new grid || bool: weight -> new grid
   const generateNewGrid = (weighted) => {
     // generate a new grid according to changed weight value
-    const {tmpGrid, starting_coords, ending_coords} = generateGrid(gridState.rows, gridState.cols, weighted)
+    const {tmpGrid, starting_coords, ending_coords, gridMap} = generateGrid(gridState.rows, gridState.cols, weighted)
 
     setGridState(prevGridState => ({
       ...prevGridState,
       grid: tmpGrid,
+      gridMap: gridMap,
       weighted: weighted,
       starting_coords: starting_coords,
       ending_coords: ending_coords
@@ -78,18 +85,11 @@ export default function PathfindingContainer() {
 
   // Generate a new grid on mount
   useEffect(() => {
-    const { tmpGrid, starting_coords, ending_coords} = generateGrid(gridState.rows, gridState.cols, gridState.weighted)
-
-    setGridState(prevGridState => ({
-      ...prevGridState,
-      grid: tmpGrid,
-      starting_coords: starting_coords,
-      ending_coords: ending_coords
-    }))
+    generateNewGrid(gridState.weighted)
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-full items-center justify-start pt-20 bg-[#121212]'>
+    <div className='flex flex-col w-full h-full items-center justify-start pt-[3rem] bg-[#121212]'>
         
         {/* Title */}
         <motion.h1 
@@ -111,7 +111,8 @@ export default function PathfindingContainer() {
             <PathfinderControls 
               weighted={gridState.weighted}
               handleGenerateGrid={generateNewGrid} 
-              handleGenerateBoundary={generateBoundaryPattern}/>
+              handleGenerateBoundary={generateBoundaryPattern}
+              handleFind={generatePath}/>
             
             {/* Grid Container */}
             <motion.div 

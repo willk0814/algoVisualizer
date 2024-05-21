@@ -22,20 +22,9 @@ export function generateGrid(rows, columns, weighted) {
         }
         tmpGrid.push(tmpRow);
     }
-    
-    // define vertical and horzontal midpoints
-    const middle_row = Math.floor((rows - 1) / 2)
-    const middle_col = Math.floor((columns - 1) / 2)
-    
-    // generate random starting and ending points
-    const starting_coords = [
-        Math.floor(Math.random() * middle_row) + 1, 
-        Math.floor(Math.random() * middle_col) + 1
-    ]
-    const ending_coords = [
-        Math.floor(Math.random() * (rows - middle_row)) + middle_row - 1, 
-        Math.floor(Math.random() * (columns - middle_col)) + middle_col - 1, 
-    ]
+
+    const starting_coords = generateStartingCoords(rows, columns)
+    const ending_coords = generateEndingCoordds(rows, columns)
 
     // update grid
     tmpGrid[starting_coords[0]][starting_coords[1]] = 'start'
@@ -44,9 +33,160 @@ export function generateGrid(rows, columns, weighted) {
     return {
         tmpGrid: tmpGrid,
         starting_coords: starting_coords,
-        ending_coords: ending_coords
+        ending_coords: ending_coords,
+        gridMap: generateMap(tmpGrid, weighted)
     };
 }
+
+// Generate starting_coords
+function generateStartingCoords(rows, cols){
+    return [
+        Math.floor(Math.random() * (rows * .30)),
+        Math.floor(Math.random() * (cols * .30))
+    ]
+}
+
+// Generate ending_coordds
+function generateEndingCoordds(rows, cols){
+    return [
+        Math.floor(Math.random() * (rows * .30)) + Math.floor(rows * .70),
+        Math.floor(Math.random() * (cols * .30)) + Math.floor(cols * .70)
+    ]
+}
+
+// Generate an adjacency list from a grid
+function generateMap(grid, weighted){
+
+    const neighborMap = {}
+    const { rows, cols } = { rows: grid.length, cols: grid[0].length}
+
+    const weightMap = {
+        'start': 0,
+        'goal': 0,
+        'w0_unvisited': 1,
+        'w1_unvisited': 5,
+        'w2_unvisited': 10,
+        'w3_unvisited': 15,
+    }
+
+    for (let i = 0; i < rows; i++){
+        for (let j = 0; j < cols; j++){
+            let connections = []
+            
+            // check cell above
+            if (i > 0 && grid[i - 1][j] !== 'boundary'){
+                if (weighted){
+                    connections.push([[i - 1, j], weightMap[grid[i - 1][j]]])
+                } else {
+                    connections.push([i - 1, j])
+                }
+            }
+
+            // check cell below
+            if (i < rows - 1 && grid[i + 1][j] !== 'boundary'){
+                if (weighted){
+                    connections.push([[i + 1, j], weightMap[grid[i + 1][j]]])
+                } else {
+                    connections.push([i + 1, j])
+                }
+            }
+
+            // check cell to the left
+            if (j > 0 && grid[i][j - 1] !== 'boundary'){
+                if (weighted){
+                    connections.push([[i, j - 1], weightMap[grid[i][j - 1]]])
+                } else {
+                    connections.push([i, j - 1])
+                }
+            }
+
+            // check cell to the right
+            if (j < cols - 1 && grid[i][j + 1] !== 'boundary'){
+                if (weighted){
+                    connections.push([[i, j + 1], weightMap[grid[i][j + 1]]])
+                } else {
+                    connections.push([i, j + 1])
+                }
+            }
+            neighborMap[[i, j]] = connections;
+        }
+    }
+    return neighborMap
+}
+
+// Pathfinding Driver
+export function pathfindingDriver(algo_id, gridState){
+    let animation_sequence = [];
+    if (algo_id === 'BFS'){
+        animation_sequence = BFS(gridState)        
+    } else if (algo_id === 'DFS'){
+        animation_sequence = DFS(gridState)
+    } else if (algo_id === 'dijikstra'){
+        console.log('dijikstra from find driver')
+    } else if (algo_id === 'a*'){
+        console.log('A* called from find driver')
+    }
+
+    return animation_sequence
+    // Construct Final Path and add it to the end of animation sequence
+}
+
+// BFS
+function BFS(gridState){
+
+    function renderFinalPath(final_path, animation_seq){
+        for (let i = 1; i < final_path.length - 1; i++){
+            animation_seq.push(new PathAnimation('goal', final_path[i][0], final_path[i][1]))
+        }
+        return animation_seq
+    }
+
+    const { grid, gridMap, starting_coords, ending_coords, rows, columns, weighted } = gridState
+
+    // Construct a visited array
+    const visited = Array.from({ length: rows }, () => Array(columns).fill(false))
+
+    // return animation_sequence
+    const animation_seq = []
+
+    // a queue to use for maintaining possible paths
+    let queue = [[starting_coords]]
+
+    while (queue.length > 0){
+        for (let i = 0; i < queue.length; i++){
+            let current_path = queue.shift()
+            let current_node = current_path[current_path.length - 1]
+
+            if (current_node[0] === ending_coords[0] && current_node[1] === ending_coords[1]){
+                return renderFinalPath(current_path, animation_seq)
+            }
+
+            // Ensure that we are not overwriting the starting node
+            if (!(current_node[0] === starting_coords[0] && current_node[1] === starting_coords[1])){
+                animation_seq.push(new PathAnimation('visited', current_node[0], current_node[1]))
+            }
+
+            let neighbors = gridMap[current_node]
+            for (let i = 0; i < neighbors.length; i++){
+                const [neighborRow, neighborCol] = neighbors[i]
+                if (!(visited[neighborRow][neighborCol])){
+                    let new_path = [...current_path, neighbors[i]]
+                    queue.push(new_path)
+                    visited[neighborRow][neighborCol] = true
+                }
+            }
+
+        }
+    }
+
+    return animation_seq
+
+}
+
+function DFS(gridState){
+    console.log('DFS called')
+}
+
 
 // Boundary Driver
 // gridState, boundaryPattern -> animation_sequence
@@ -106,7 +246,6 @@ export function constructBoundaryPrefix( gridState ){
     }
     return sequence_prefix
 }
-
 
 function recursiveDivison(gridState, horizontal_start){
     let animation_sequence = []
@@ -185,3 +324,4 @@ function recursiveDivison(gridState, horizontal_start){
     divide(1, rows - 1, 1, cols - 1, horizontal_start === true, 0)
     return animation_sequence
 }
+

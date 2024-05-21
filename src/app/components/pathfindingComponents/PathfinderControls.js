@@ -1,12 +1,14 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { motion } from 'framer-motion'
 import GridCell from './GridCell'
 
 export default function PathfinderControls({ 
   weighted, handleGenerateGrid,
-  handleGenerateBoundary }) {
+  handleGenerateBoundary, handleFind }) {
+
+    const [selectedAlgo, setSelectedAlgo] = useState('none')
 
 
   return (
@@ -23,6 +25,7 @@ export default function PathfinderControls({
       animate='animate'
       className='flex flex-col justify-center item-start space-y-2 p-2'>
       
+      {/* Generate Grid */}
       <div className='flex flex-col space-y-1'>
         <h1 className='text-md'>Grid Type:</h1>
         <div className='flex flex-row space-x-1'>
@@ -48,15 +51,15 @@ export default function PathfinderControls({
               <div className='flex flex-row space-x-2'>
                 <div className='flex flex-row items-center space-x-1'>
                   <GridCell state={'w0_unvisited'} />
-                  <h1>0</h1>
-                </div>
-                <div className='flex flex-row items-center space-x-1'>
-                  <GridCell state={'w1_unvisited'} />
                   <h1>1</h1>
                 </div>
                 <div className='flex flex-row items-center space-x-1'>
+                  <GridCell state={'w1_unvisited'} />
+                  <h1>5</h1>
+                </div>
+                <div className='flex flex-row items-center space-x-1'>
                   <GridCell state={'w2_unvisited'} />
-                  <h1>2</h1>
+                  <h1>15</h1>
                 </div>
                 <div className='flex flex-row items-center space-x-1'>
                   <GridCell state={'w3_unvisited'} />
@@ -70,9 +73,11 @@ export default function PathfinderControls({
 
       <div className='w-full h-[3px] bg-gray-700 rounded-full'></div>
 
+      {/* Generate Boundary */}
       <div className='flex flex-col space-y-1'>
         <h1 className='text-md'>Maze Type:</h1>
         <select
+          disabled={true}
           className='bg-gray-700 p-2 rounded-lg text-md'>
           <option>Horizontal Division</option>
           <option>Vertical Division</option>
@@ -80,25 +85,33 @@ export default function PathfinderControls({
         </select>
       </div>
       <button 
-        onClick={() => handleGenerateBoundary('h_div')}
+        disabled={false}
+        onClick={() => setSelectedAlgo('none')}
         className='bg-gray-700 p-2 rounded-lg text-md'>Generate</button>
       <div>
           <p className='max-w-[300px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
         </div>
       <div className='w-full h-[3px] bg-gray-700 rounded-full'></div>
 
+      {/* Generate Path */}
       <div className='flex flex-col space-y-1'>
         <h1 className='text-md'>Algorithm:</h1>
         <select
+          value={selectedAlgo}
+          onChange={(e) => setSelectedAlgo(e.target.value)}
           className='bg-gray-700 p-2 rounded-lg text-md'>
-          <option>BFS</option>
-          <option>DFS</option>
-          <option>Dijksta</option>
-          <option>A*</option>
+          <option value={'none'} disabled={true}>Select an algo</option>
+          <option value={'BFS'}>BFS</option>
+          <option value={'DFS'}>DFS</option>
+          <option value={'dijikstra'}>Dijksta</option>
+          <option value={'A*'}>A*</option>
         </select>
       </div>
 
-      <button className='bg-gray-700 p-2 rounded-lg text-md'>Find!</button>
+      <button 
+        onClick={() => handleFind(selectedAlgo)}
+        disabled={selectedAlgo === 'none'}
+        className='bg-gray-700 p-2 rounded-lg text-md'>Find!</button>
       <div>
           <p className='max-w-[300px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
       </div>
