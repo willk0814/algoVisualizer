@@ -9,13 +9,23 @@ export class PathAnimation {
 
 // Generate a new grid
 export function generateGrid(rows, columns, weighted) {
+    // define a weight map
+    const weight_map = {
+        0: 0, 
+        1: 0, 
+        2: 0, 
+        3: 1, 
+        4: 2, 
+        5: 3, 
+    }
+
     // generate a grid
     const tmpGrid = [];
     for (let i = 0; i < rows; i++) {
         const tmpRow = [];
         for (let j = 0; j < columns; j++) {
             if (weighted) {
-                tmpRow.push(`w${Math.floor(Math.random() * 4)}_unvisited`);
+                tmpRow.push(`w${weight_map[Math.floor(Math.random() * 4) + 2]}_unvisited`);
             } else {
                 tmpRow.push('w0_unvisited');
             }
@@ -23,7 +33,7 @@ export function generateGrid(rows, columns, weighted) {
         tmpGrid.push(tmpRow);
     }
 
-    const starting_coords = generateStartingCoords(rows, columns)
+    const starting_coords = generatestarting_coords(rows, columns)
     const ending_coords = generateEndingCoordds(rows, columns)
 
     // update grid
@@ -39,7 +49,7 @@ export function generateGrid(rows, columns, weighted) {
 }
 
 // Generate starting_coords
-function generateStartingCoords(rows, cols){
+function generatestarting_coords(rows, cols){
     return [
         Math.floor(Math.random() * (rows * .30)),
         Math.floor(Math.random() * (cols * .30))
@@ -64,14 +74,24 @@ function generateMap(grid, weighted){
         'start': 0,
         'goal': 0,
         'w0_unvisited': 1,
-        'w1_unvisited': 5,
-        'w2_unvisited': 10,
-        'w3_unvisited': 15,
+        'w1_unvisited': 10,
+        'w2_unvisited': 50,
+        'w3_unvisited': 1000,
     }
 
     for (let i = 0; i < rows; i++){
         for (let j = 0; j < cols; j++){
             let connections = []
+            
+            
+            // check cell below
+            if (i < rows - 1 && grid[i + 1][j] !== 'boundary'){
+                if (weighted){
+                    connections.push([[i + 1, j], weightMap[grid[i + 1][j]]])
+                } else {
+                    connections.push([i + 1, j])
+                }
+            }
             
             // check cell above
             if (i > 0 && grid[i - 1][j] !== 'boundary'){
@@ -81,16 +101,7 @@ function generateMap(grid, weighted){
                     connections.push([i - 1, j])
                 }
             }
-
-            // check cell below
-            if (i < rows - 1 && grid[i + 1][j] !== 'boundary'){
-                if (weighted){
-                    connections.push([[i + 1, j], weightMap[grid[i + 1][j]]])
-                } else {
-                    connections.push([i + 1, j])
-                }
-            }
-
+            
             // check cell to the left
             if (j > 0 && grid[i][j - 1] !== 'boundary'){
                 if (weighted){
@@ -122,7 +133,7 @@ export function pathfindingDriver(algo_id, gridState){
     } else if (algo_id === 'DFS'){
         animation_sequence = DFS(gridState)
     } else if (algo_id === 'dijikstra'){
-        console.log('dijikstra from find driver')
+        animation_sequence = Dijikstra(gridState)
     } else if (algo_id === 'a*'){
         console.log('A* called from find driver')
     }
@@ -184,9 +195,169 @@ function BFS(gridState){
 }
 
 function DFS(gridState){
-    console.log('DFS called')
+    
+    const { grid, gridMap, starting_coords, ending_coords, rows, columns, weighted } = gridState
+
+    // Construct a visited array
+    const visited = Array.from({ length: rows }, () => Array(columns).fill(false))
+    const parents = {}
+
+    // return animation_sequence
+    let animation_seq = []
+
+
+    let stack = []
+    stack.push(starting_coords)
+    visited[starting_coords[0]][starting_coords[1]] = true
+
+    while (stack.length > 0){
+        const current = stack.pop()
+
+        if (current[0] === ending_coords[0] && current[1] === ending_coords[1]){
+            break
+        }
+
+        animation_seq.push(new PathAnimation('visited', current[0], current[1]))
+        const neighbors = gridMap[current]
+        for (const neighbor of neighbors){
+
+            console.log(visited)
+            if (!(visited[neighbor[0]][neighbor[1]])){
+                stack.push(neighbor)
+                visited[neighbor[0]][neighbor[1]] = true
+                parents[`${neighbor[0]}: ${neighbor[1]}`] = current;
+            }
+        }
+    }
+
+    let final_path = []
+    let current = ending_coords
+    while (current !== undefined){
+        final_path.unshift(current);
+        current = parents[`${current[0]}: ${current[1]}`]
+    }
+
+    for (let i = 1; i < final_path.length; i++ ){
+        animation_seq.push(new PathAnimation('goal', final_path[i][0], final_path[i][1]))
+    }
+
+    return animation_seq
+    
 }
 
+function Dijikstra(gridState){
+    const { grid, gridMap, rows, columns, starting_coords, ending_coords } = gridState
+    const visited = Array.from({ length: rows }, () => Array(columns).fill(false)) 
+
+    // declare return object
+    let animation_seq = []
+
+    // track distances from the starts & optimized parents
+    let parents = {}
+    let distances = {}
+
+    // Update the distances to endingCoord and parent
+    distances[ending_coords] = Number.POSITIVE_INFINITY
+    parents[starting_coords] = null
+
+    // Find possible connections from gridMap
+    const neighbors = gridMap[starting_coords]
+    for (const [node, cost] of neighbors){
+        distances[node] = cost
+        parents[node] = starting_coords
+    }
+
+    let node_str = findShortestDistanceNode(distances, visited)
+
+    while(node_str){
+        let node_arr = node_str.split(",").map((element) => parseInt(element))
+
+        // generate an animation to show that we have visited
+        animation_seq.push(new PathAnimation('visited', node_arr[0], node_arr[1]))
+
+        const distance = distances[node_str]
+        const children = gridMap[node_str]
+
+        for (const [child, cost] of children){
+            // check to see if the child is the starting node
+            if (child[0] === starting_coords[0] && child[1] === starting_coords[1]){
+                continue
+
+            // check to see if child is ending node
+            } else if (child[0] === ending_coords[0] && child[1] === ending_coords[1]){
+                parents[child] = node_arr
+                return constructFinalPath(starting_coords, ending_coords, parents, animation_seq)
+            
+            // otherwise recurse to shortest distance node
+            } else {
+                // find the distance to our current position
+                const newDistance = distance + cost
+
+                // update the distance if it is shorter than stored distance
+                if (!visited[child[0]][child[1]] && 
+                    !(distances[child] || distances[child] > newDistance)){
+                    distances[child] = newDistance
+                    parents[child] = node_arr
+                }
+            }
+        }
+
+        visited[node_arr[0]][node_arr[1]] = true
+        node_str = shortestDistanceNode(distances, visited)
+    }
+    return animation_seq;
+}
+
+function shortestDistanceNode(distances, visited) {
+    let shortest = null
+
+    for (const [node, distance] of Object.entries(distances)) {
+        const [row, col] = node.split(",").map((element) => parseInt(element));
+        if (!visited[row][col] &&
+            (distance < distances[shortest] || shortest == null)){
+                shortest = node
+            }
+    }
+    return shortest
+}
+
+function constructFinalPath(starting_coords, ending_coords, parents, animation_seq) {
+    const path = []; // Array to store the final path
+  
+    // Begin from the ending_coords
+    let currentCoords = ending_coords;
+
+    while (!(currentCoords[0] === starting_coords[0] && currentCoords[1] === starting_coords[1]) &&
+        !path.includes(currentCoords)){
+        // add current coordinates to the path
+        path.push(currentCoords)
+        // reassign currentCoords to the current nodes parents
+        currentCoords = parents[currentCoords.join(',')] 
+    }
+    
+    path.reverse(); // Reverse the path to get the correct order
+
+    // Add Animation objects for the final path
+    for (const [row, col] of path) {
+      animation_seq.push(new PathAnimation("goal", row, col));
+    }
+    
+    return animation_seq; // Return the updated array of Animation objects
+  }
+
+// helper function to find the shortest distance node from where we are
+function findShortestDistanceNode(distances, visited){
+    let shortest = null
+
+    for (const [node, distance] of Object.entries(distances)){
+        const [row, col] = node.split(",").map((element) => parseInt(element))
+        if (!visited[row][col] &&
+            (distance < distances[shortest] || shortest === null )){
+                shortest = node
+            }
+    }
+    return shortest
+}
 
 // Boundary Driver
 // gridState, boundaryPattern -> animation_sequence
@@ -246,6 +417,7 @@ export function constructBoundaryPrefix( gridState ){
     }
     return sequence_prefix
 }
+
 
 function recursiveDivison(gridState, horizontal_start){
     let animation_sequence = []

@@ -14,8 +14,8 @@ export default function PathfindingContainer() {
   const [gridState, setGridState] = useState ({
     grid: [['']],
     gridMap: {},
-    rows: 22, 
-    cols: 35,
+    rows: 25, 
+    cols: 25,
     starting_coords: [],
     ending_coords: [],
     weighted: false
@@ -127,7 +127,7 @@ export default function PathfindingContainer() {
               initial='initial'
               animate='animate'
               exit='initial'
-              className='flex flex-col w-min space-y-1 justify-center'>
+              className='flex flex-col w-min space-y-1 justify-start'>
                 {gridState.grid.map((row, row_indx) => (
                   <div key={row_indx} className='flex flex-row space-x-1'>
                     {row.map((cell_state, col_indx) => (

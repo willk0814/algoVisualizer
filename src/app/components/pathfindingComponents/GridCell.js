@@ -29,7 +29,9 @@ export default function GridCell({ state }) {
             setCellColor('#6C4631')
         
         } else if (state === 'goal'){
-            setCellColor('#30fc03')
+            setCellColor('#50C878')
+        } else if (state === 'final_path'){
+            setCellColor('#097969')
         } else if (state === 'boundary'){
             setCellColor('#AA4A44')
         } else if (state === 'start'){

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { motion } from 'framer-motion'
 import GridCell from './GridCell'
@@ -10,7 +10,16 @@ export default function PathfinderControls({
 
     const [selectedAlgo, setSelectedAlgo] = useState('none')
 
+    const algoInfo = {
+      'BFS': 'BFS is unweighted and undirected and guarantees the shortest path',
+      'DFS': 'DFS is unweighted and undirected and does not guarantee the shortest path',
+      'dijikstra': "Dijikstra's algorithm is weighted and directed and guarantees the shortest path",
+      'A*': 'A* is weighted and directed and guarantees the shortest path'
+    }
 
+    useEffect(() => {
+      setSelectedAlgo('none')
+    }, [weighted])
   return (
     <motion.div
       variants={{
@@ -23,7 +32,7 @@ export default function PathfinderControls({
       }}
       initial='initial'
       animate='animate'
-      className='flex flex-col justify-center item-start space-y-2 p-2'>
+      className='flex flex-col justify-start item-start space-y-2 p-2'>
       
       {/* Generate Grid */}
       <div className='flex flex-col space-y-1'>
@@ -55,15 +64,15 @@ export default function PathfinderControls({
                 </div>
                 <div className='flex flex-row items-center space-x-1'>
                   <GridCell state={'w1_unvisited'} />
-                  <h1>5</h1>
+                  <h1>10</h1>
                 </div>
                 <div className='flex flex-row items-center space-x-1'>
                   <GridCell state={'w2_unvisited'} />
-                  <h1>15</h1>
+                  <h1>50</h1>
                 </div>
                 <div className='flex flex-row items-center space-x-1'>
                   <GridCell state={'w3_unvisited'} />
-                  <h1>3</h1>
+                  <h1>1000</h1>
                 </div>
               </div>
             </div>
@@ -83,12 +92,12 @@ export default function PathfinderControls({
           <option>Vertical Division</option>
           <option>Flappy Bird</option>
         </select>
+        <button 
+          disabled={true}
+          onClick={() => setSelectedAlgo('none')}
+          className='bg-gray-700 p-2 rounded-lg text-md'>Generate</button>
+        <div>
       </div>
-      <button 
-        disabled={false}
-        onClick={() => setSelectedAlgo('none')}
-        className='bg-gray-700 p-2 rounded-lg text-md'>Generate</button>
-      <div>
           <p className='max-w-[300px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
         </div>
       <div className='w-full h-[3px] bg-gray-700 rounded-full'></div>
@@ -101,19 +110,20 @@ export default function PathfinderControls({
           onChange={(e) => setSelectedAlgo(e.target.value)}
           className='bg-gray-700 p-2 rounded-lg text-md'>
           <option value={'none'} disabled={true}>Select an algo</option>
-          <option value={'BFS'}>BFS</option>
-          <option value={'DFS'}>DFS</option>
-          <option value={'dijikstra'}>Dijksta</option>
-          <option value={'A*'}>A*</option>
+          <option value={'BFS'} disabled={weighted}>BFS</option>
+          <option value={'DFS'} disabled={weighted}>DFS</option>
+          <option value={'dijikstra'} disabled={!weighted}>Dijksta</option>
+          <option value={'A*'} disabled={!weighted}>A*</option>
         </select>
-      </div>
-
-      <button 
-        onClick={() => handleFind(selectedAlgo)}
-        disabled={selectedAlgo === 'none'}
-        className='bg-gray-700 p-2 rounded-lg text-md'>Find!</button>
-      <div>
-          <p className='max-w-[300px]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+        <button 
+          onClick={() => handleFind(selectedAlgo)}
+          disabled={selectedAlgo === 'none'}
+          className='bg-gray-700 p-2 rounded-lg text-md'>Find!</button>
+        <div>
+            <p className='max-w-[300px]'>
+              {algoInfo[selectedAlgo]}
+            </p>
+        </div>
       </div>
 
     </motion.div>
