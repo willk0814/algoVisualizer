@@ -5,23 +5,23 @@ import { motion } from 'framer-motion'
 import SortingControls from './SortingControls'
 import { SortAnimation, generateArray, sortingDriver } from '@/app/logic/sortingLogic/sortingLogic'
 import ArrayBar from './ArrayBar'
+import InfoBlock from './InfoBlock'
+
+import { FaPause } from "react-icons/fa";
+import { FaAngleDoubleLeft } from "react-icons/fa";
+import { FaAngleDoubleRight } from "react-icons/fa";
+
+
 
 export default function SortingContainer() {
 
   const [displayArray, setDisplayArray] = useState([])
-  const [speedVal, setSpeedVal] = useState(200)
+  const [displayInfo, setDisplayInfo] = useState([])
+
 
   const generateNewArray = () => {
     const tmpArray = generateArray(50, 100)
     setDisplayArray(tmpArray)
-  }
-
-  const handleSetSpeedVal = ( reduce ) => {
-    if (reduce && speedVal >= 50){
-      setSpeedVal(prevSpeedVal => prevSpeedVal - 25)
-    } else if (!reduce && speedVal <= 350) {
-      setSpeedVal(prevSpeedVal => prevSpeedVal + 25)
-    }
   }
 
   const handleSort = (algo_id) => {
@@ -62,13 +62,12 @@ export default function SortingContainer() {
       prior_animation = animation
 
 
-    }, speedVal)
+    }, 1000)
   }
 
   const handleAnimation = (animation) => {
     const { status, indx1, indx2 } = animation
-    console.log('Rendering Animation: ', animation)
-
+    // console.log('Rendering Animation: ', animation)
 
     setDisplayArray(prevDisplayArray => {
       const updatedArray = [...prevDisplayArray]
@@ -95,15 +94,25 @@ export default function SortingContainer() {
         status: status
       }
 
-      console.log('Post swap animation: ', updatedArray)
       return (
         updatedArray
       )
     })
+
+    if (['comparing', 'swapping', 'sorted'].includes(status)){
+      setDisplayInfo(prevDisplayInfo => {
+        const newInfo = {
+          status: status,
+          indices: status === 'sorted' ? [indx1] : [indx1, indx2]
+        };
+    
+        return [newInfo, ...prevDisplayInfo];
+      });
+    }
   }
 
   useEffect(() => {
-    const tmpArray = generateArray(50, 100)
+    const tmpArray = generateArray(50, 60)
 
     setDisplayArray(tmpArray)
   }, [])
@@ -124,16 +133,17 @@ export default function SortingContainer() {
           exit='initial'
           className='text-6xl my-4'>Sorter</motion.h1>
 
-        <div className='flex flex-row'>
+        <div className='flex flex-row h-[75vh]'>
+          {/* Controls */}
           <SortingControls 
             handleGenerateArray={generateNewArray}
-            handleSort={handleSort}
-            speedVal={speedVal}
-            setSpeedVal={handleSetSpeedVal}/>
+            handleSort={handleSort}/>
+          
+          {/* Array */}
           <motion.div
             variants={{
               initial: { opacity: 0, x: '10px'},
-              animate: { opacity: 1, y: 0,
+              animate: { opacity: 1, x: 0,
                 transition: {
                   delay: 0.5
                 }
@@ -141,7 +151,7 @@ export default function SortingContainer() {
             }}
             initial='initial'
             animate='animate'
-            className='flex flex-row space-x-1 h-[75vh]'>
+            className='flex flex-row space-x-1 border-2 border-gray-600 rounded-lg p-2'>
               {displayArray.map((element, indx) => {
                 const {value, status} = element
                 return(
@@ -149,6 +159,68 @@ export default function SortingContainer() {
 
               )})}
           </motion.div>
+
+          
+          {/* Information & Playback Controls Column*/}
+          <div className='flex flex-col'>
+            {/* Information Container */}
+            <motion.div 
+              className='flex flex-col flex-1 border-2 border-gray-600 rounded-lg p-2'
+              variants={{
+                initial: { opacity: 0, x: '10px' },
+                animate: { opacity: 1, x: 0,
+                  transition: { delay: 0.8 }
+                }
+              }}
+              initial='initial'
+              animate='animate'>
+              <h1 className='text-lg'>Processing Steps</h1>
+              <div
+                className='flex flex-col overflow-y-scroll w-[250px] flex-1 max-h-[350px]'>
+                  
+                  {displayInfo.map((element, indx) => {
+                    return(
+                      <InfoBlock 
+                        key={indx}
+                        action_desc={element} />
+                    )
+                  })}
+              </div>
+            </motion.div>
+              
+            {/* Playback Controls Container */}
+            <motion.div 
+              className='flex flex-col border-2 border-gray-600 rounded-lg flex-1 space-y-2 justify-center'
+              variants={{
+                initial: { opacity: 0, x: '10px' },
+                animate: { opacity: 1, x: 0,
+                  transition: { delay: 0.8 }
+                 }
+              }}
+              initial='initial'
+              animate='animate'>
+                <div className='flex flex-row space-x-2 items-center justify-center'>
+                  <button className='p-2 bg-gray-600 rounded-lg'>
+                    <FaAngleDoubleLeft size={35}/>
+                  </button>
+                  <button className='p-2 bg-gray-600 rounded-lg'>
+                    <FaPause size={35}/>
+                  </button>
+                  <button className='p-2 bg-gray-600 rounded-lg'>
+                    <FaAngleDoubleRight size={35}/>
+                  </button>
+                </div>
+
+                <div className='flex items-center justify-center p-2 rounded-lg'>
+                  <h1 className='text-2xl bg-gray-600 p-2 rounded-lg'>250 m.s.</h1>
+                </div>
+
+
+            </motion.div>
+          
+          
+          </div>
+
         </div>
     </div>
   )

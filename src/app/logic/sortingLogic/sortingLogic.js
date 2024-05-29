@@ -65,3 +65,7 @@ function bubbleSort(array){
     animation_sequence.push(new SortAnimation('sorted', 0, 0))
     return animation_sequence
 }
+
+function heapSort(array){
+    
+}
