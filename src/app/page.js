@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <motion.div 
       className="bg-[#121212] flex flex-col space-y-5 justify-center items-center w-[100vw] min-h-[100vh] py-10"
-      transition={{ staggerChildren: 0.2 }}
+      transition={{ staggerChildren: 0.2, delay: 0.6 }}
       initial='initial'
       animate='animate'>
 
