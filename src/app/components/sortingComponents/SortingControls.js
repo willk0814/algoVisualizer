@@ -40,9 +40,9 @@ export default function SortingControls({ handleGenerateArray, handleSort }) {
                 <select
                     className='bg-gray-700 p-2 rounded-lg text-md'>
                     <option>Bubble</option>
-                    <option>Heap</option>
-                    <option>Merge</option>
-                    <option>Quick</option>
+                    <option disabled={true}>Heap</option>
+                    <option disabled={true}>Merge</option>
+                    <option disabled={true}>Quick</option>
                 </select>
             </div>
             <button 

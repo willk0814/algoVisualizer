@@ -62,7 +62,7 @@ export default function SortingContainer() {
       prior_animation = animation
 
 
-    }, 1000)
+    }, 200)
   }
 
   const handleAnimation = (animation) => {

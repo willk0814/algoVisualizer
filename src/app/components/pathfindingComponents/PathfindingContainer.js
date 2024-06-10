@@ -85,7 +85,7 @@ export default function PathfindingContainer() {
 
   // Generate a new grid on mount
   useEffect(() => {
-    // generateNewGrid(gridState.weighted)
+    generateNewGrid(gridState.weighted)
   }, [])
 
   return (
