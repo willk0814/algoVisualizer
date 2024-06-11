@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function MobilePathfindingControls({ 
   weighted, handleGenerateGrid,
   handleGenerateBoundary, handleFind }) {
 
     const [selectedAlgo, setSelectedAlgo] = useState('none')
+
+    useEffect(() => {
+      setSelectedAlgo('none')
+    }, [weighted])
   return (
     <div className='flex space-x-2 pb-4'>
 

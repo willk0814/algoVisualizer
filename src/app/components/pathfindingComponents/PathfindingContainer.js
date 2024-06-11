@@ -124,8 +124,10 @@ export default function PathfindingContainer() {
         cols = 15
       }
 
-      console.log(`Generating a new grid with cols: ${cols}`)
-      generateNewGrid(gridState.weighted, cols)
+      if (cols !== gridState.cols){
+        console.log(`Generating a new grid with cols: ${cols}`)
+        generateNewGrid(gridState.weighted, cols) 
+      }
     }
 
     window.addEventListener('resize', handleResize)
