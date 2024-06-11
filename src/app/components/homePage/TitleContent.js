@@ -39,14 +39,14 @@ export default function TitleContent() {
             Algorithm Visualizer
           </motion.h1>
 
-          <div className="flex flex-wrap items-center justify-center">
+          <motion.div className="flex flex-wrap items-center justify-center">
             
-            <div className="flex flex-col justify-between m-2 space-y-2">
+            <motion.div className="flex flex-col justify-between m-2 space-y-2">
               <motion.p 
                 className="text-[#A3BBAD] w-full max-w-[400px]"
                 variants={variant}>Welcome and thank you for checking out this project.  I built this while studying for technical interviews because I wanted a way to visualize the algorithms that I was using.  I hope you enjoy using it and take some value from it!  Don't hesitate to contact me with any suggestions or feedback</motion.p>
 
-              <div className="flex flex-row justify-center space-x-2">
+              <motion.div className="flex flex-row justify-center space-x-2">
                 <motion.div
                   className="bg-[#A3BBAD] rounded-md text-[#121212] text-lg w-[50%] flex items-center justify-center"
                   variants={variant}>
@@ -67,8 +67,8 @@ export default function TitleContent() {
                   </Link>
                 </motion.div>
 
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
             
             <motion.div 
               variants={variant}
@@ -81,7 +81,7 @@ export default function TitleContent() {
                 height={200}
                 className='rounded-lg'/>
 
-                <div 
+                <motion.div 
                   className="flex flex-rows justify-between">
                   <motion.a
                     variants={iconVariant}>
@@ -97,11 +97,11 @@ export default function TitleContent() {
                     variants={iconVariant}>
                     <CgWebsite size={35} color="#121212"/>
                   </motion.a>
-                </div>
+                </motion.div>
             </motion.div>
 
 
-          </div>
+          </motion.div>
 
 
         </motion.div>
