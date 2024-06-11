@@ -104,9 +104,7 @@ export default function PathfindingContainer() {
       const w = window.innerWidth
       let cols = 0
 
-      if (w === width){
-        return
-      } else {
+      if (w !== width){
         if (w >= 1140){
           cols = 35
           setShowMobile(false)
