@@ -101,32 +101,32 @@ export default function PathfindingContainer() {
 
   useEffect(() => {
     const handleResize = () => {
-      const w = window.innerWidth()
+      const w = window.innerWidth
       let cols = 0
 
       if (w === width){
         return
-      }
-
-      if (w >= 1140){
-        cols = 35
-        setShowMobile(false)
-      } else if (w < 1140 && w >= 930){
-        cols = 25
-        setShowMobile(false)
-      } else if (w < 930 && w >= 830){
-        setShowMobile(true)
-        cols = 35
-      } else if (w < 830 && w >= 600){
-        setShowMobile(true)
-        cols = 25
-      } else if (w < 600  && w >= 400){
-        setShowMobile(true)
-        cols = 20
-      } else if (w < 400){
-        setShowMobile(true)
-        cols = 15
-      }
+      } else {
+        if (w >= 1140){
+          cols = 35
+          setShowMobile(false)
+        } else if (w < 1140 && w >= 930){
+          cols = 25
+          setShowMobile(false)
+        } else if (w < 930 && w >= 830){
+          setShowMobile(true)
+          cols = 35
+        } else if (w < 830 && w >= 600){
+          setShowMobile(true)
+          cols = 25
+        } else if (w < 600  && w >= 400){
+          setShowMobile(true)
+          cols = 20
+        } else if (w < 400){
+          setShowMobile(true)
+          cols = 15
+        }
+    }
       
       console.log(`Generating a new grid with cols: ${cols}`)
       setWidth(w)
