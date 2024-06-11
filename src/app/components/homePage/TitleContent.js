@@ -30,7 +30,7 @@ export default function TitleContent() {
             variants={variant}
             initial='initial'
             animate='animate'
-            transition={{ staggerChildren: 0.2 }}>
+            transition={{ staggerChildren: 0.2, delay: 2 }}>
 
           {/* Title */}
           <motion.h1
