@@ -116,9 +116,12 @@ export default function PathfindingContainer() {
       } else if (w < 830 && w >= 600){
         setShowMobile(true)
         cols = 25
-      } else if (w < 600){
+      } else if (w < 600  && w >= 400){
         setShowMobile(true)
         cols = 20
+      } else if (w < 400){
+        setShowMobile(true)
+        cols = 15
       }
 
       console.log(`Generating a new grid with cols: ${cols}`)
@@ -132,7 +135,7 @@ export default function PathfindingContainer() {
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-full items-center justify-center bg-[#121212]'>
+    <div className='flex flex-col w-full min-h-screen items-center justify-start bg-[#121212]'>
         
         {/* Title */}
         <motion.h1 
@@ -147,11 +150,14 @@ export default function PathfindingContainer() {
           initial='initial'
           animate='animate'
           exit='initial'
-          className='text-6xl'>Pathfinder</motion.h1>
+          className='text-3xl sm:text-6xl py-4 pt-[3.5rem]'>Pathfinder</motion.h1>
 
         {showMobile && 
           <MobilePathfindingControls 
             weighted={gridState.weighted}
+            handleGenerateGrid={generateNewGrid} 
+            handleGenerateBoundary={generateBoundaryPattern}
+            handleFind={generatePath}
           />}
           
         <div className='flex flex-row'>
@@ -175,7 +181,7 @@ export default function PathfindingContainer() {
               initial='initial'
               animate='animate'
               exit='initial'
-              className='flex flex-col w-min space-y-1 justify-start'>
+              className='flex flex-col w-min h-min space-y-1 justify-start'>
                 {gridState.grid.map((row, row_indx) => (
                   <div key={row_indx} className='flex flex-row space-x-1'>
                     {row.map((cell_state, col_indx) => (

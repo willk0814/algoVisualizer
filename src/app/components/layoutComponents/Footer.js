@@ -3,19 +3,19 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <div className='flex items-center justify-center w-full bg-[#121212] pb-5'>
+    <div className='flex items-end justify-center w-full min-h-[35vh] bg-[#121212] pb-5'>
       
-      <div className='flex flex-row justify-between bg-[#E8E8E8] w-[95vw] max-w-[700px] rounded-md px-3 py-1'>
+      <div className='flex flex-row justify-between border-[#E8E8E8] border-2 w-[95vw] max-w-[700px] rounded-md px-3 py-1 mt-5'>
 
           <div className='flex flex-col space-y-3'>
             <Link 
-              className='text-[#121212] text-xl'
+              className='text-[#A3BBAD] text-xl'
               href={'/pathfinding'}>
               Pathfinder
             </Link>
             
             <Link 
-              className='text-[#121212] text-xl'
+              className='text-[#A3BBAD] text-xl'
               href={'/sorting'}>
               Sorter
             </Link>
@@ -23,9 +23,9 @@ export default function Footer() {
 
           <div
             className='flex flex-col justify-center items-start'>
-              <p className='text-[#121212]'>Made by</p>
+              <p className='text-[#A3BBAD]'>Made by</p>
               <a 
-                className='text-[#121212] text-2xl'
+                className='text-[#A3BBAD] text-2xl'
                 href='https://www.willkoenig.info'>Will Koenig</a>
           </div>
 

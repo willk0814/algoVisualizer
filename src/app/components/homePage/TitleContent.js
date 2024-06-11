@@ -23,7 +23,7 @@ export default function TitleContent() {
           <motion.h1
             initial = {{ opacity: 0, y: '25px'}}
             animate = {{ opacity: 1, y: 0 }}
-            className="text-3xl sm:text-6xl text-[#E8E8E8] text-center">
+            className="text-[1.6rem] sm:text-6xl text-[#E8E8E8] text-center">
             Algorithm Visualizer
           </motion.h1>
 
@@ -78,18 +78,33 @@ export default function TitleContent() {
                 <motion.div 
                   className="flex flex-rows justify-between">
                   <motion.a
+                    href='https://github.com/willk0814' 
+                    target='_blank'
+                    rel='noreferrer'
+                    whileHover = {{boxShadow: '0 0 10px 5px rgba(18, 18, 18, 0.5)'}}
+                    className="rounded-md"
                     initial = {{ opacity: 0 }}
                     animate = {{ opacity: 1 }}>
                     <AiFillGithub size={35} color="#121212"/>
                   </motion.a>
 
                   <motion.a
+                    href='https://linkedin.com/in/will-koenig' 
+                    target='_blank'
+                    rel='noreferrer'
+                    whileHover = {{boxShadow: '0 0 10px 5px rgba(18, 18, 18, 0.5)'}}
+                    className="rounded-md"
                     initial = {{ opacity: 0 }}
                     animate = {{ opacity: 1 }}>
                     <FaLinkedinIn size={35} color="#121212"/>
                   </motion.a>
 
                   <motion.a
+                    href='https://willkoenig.info' 
+                    target='_blank'
+                    rel='noreferrer'
+                    whileHover = {{boxShadow: '0 0 10px 5px rgba(18, 18, 18, 0.5)'}}
+                    className="rounded-md"
                     initial = {{ opacity: 0 }}
                     animate = {{ opacity: 1 }}>
                     <CgWebsite size={35} color="#121212"/>

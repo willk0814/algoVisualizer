@@ -30,7 +30,7 @@ export default function Navbar() {
               animate={showNav ? 'open' : 'closed'}>
                 <motion.span 
                   variants={{
-                    open: { rotate: 45, y: 11 },
+                    open: { rotate: 45, y: 11, backgroundColor: '#A3BBAD' },
                     closed: { rotate: 0, y: 0 }
                   }} 
                   className='bg-[#E8E8E8] rounded-lg w-6 h-[3px]'></motion.span>
@@ -43,13 +43,13 @@ export default function Navbar() {
                 <motion.span 
                   variants = {{
                     closed: { rotate: 0, y: 0 },
-                    open: { rotate: -45, y: -11 }
+                    open: { rotate: -45, y: -11, backgroundColor: '#A3BBAD' }
                   }}
                   className='bg-[#E8E8E8] rounded-lg w-6 h-[3px]'></motion.span>
               </motion.button>
 
                 
-              <motion.div
+              {showNav && <motion.div
                 className='flex flex-col justify-between h-full p-3'
                 variants={{
                   open: {opacity: 1,
@@ -65,8 +65,11 @@ export default function Navbar() {
                       open: {opacity: 1},
                       closed: {opacity: 0}
                     }}>
-                    <Link href={'/'}>
-                      <h1 className='text-2xl text-[#A3BBAD]'>Home</h1>  
+                    <Link 
+                      href={'/'}>
+                      <motion.h1 
+                        className='text-2xl text-[#E8E8E8]'
+                        whileHover={{ color: '#A3BBAD'}}>Home</motion.h1>   
                     </Link>
                   </motion.div>
                   
@@ -76,7 +79,9 @@ export default function Navbar() {
                       closed: {opacity: 0}
                     }}>
                     <Link href={'/pathfinding'}>
-                      <h1 className='text-2xl text-[#A3BBAD]'>Pathfinder</h1>  
+                      <motion.h1 
+                        className='text-2xl text-[#E8E8E8]'
+                        whileHover={{ color: '#A3BBAD'}}>Pathfinder</motion.h1>  
                     </Link>
                   </motion.div>
 
@@ -87,10 +92,12 @@ export default function Navbar() {
                       closed: {opacity: 0}
                     }}>
                     <Link href={'/sorting'}>
-                      <h1 className='text-2xl text-[#A3BBAD]'>Sorting</h1>  
+                      <motion.h1 
+                        className='text-2xl text-[#E8E8E8]'
+                        whileHover={{ color: '#A3BBAD'}}>Sorting</motion.h1>    
                     </Link>
                   </motion.div>
-              </motion.div>
+              </motion.div>}
           </motion.div>
         </div>
     </div>

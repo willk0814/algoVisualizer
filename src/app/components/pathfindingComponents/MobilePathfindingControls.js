@@ -1,50 +1,59 @@
 import React, { useState } from 'react'
 
-export default function MobilePathfindingControls({ weighted }) {
+export default function MobilePathfindingControls({ 
+  weighted, handleGenerateGrid,
+  handleGenerateBoundary, handleFind }) {
 
     const [selectedAlgo, setSelectedAlgo] = useState('none')
   return (
-    <div className='flex space-x-5 pb-4'>
+    <div className='flex space-x-2 pb-4'>
 
+        {/* Generate Grid */}
         <div className='flex flex-col space-y-2'>
             <button
-                className='bg-gray-700 px-2 py-1 rounded-lg text-md w-full'>
-                    Weighted
+              disabled={weighted}
+              onClick={() => handleGenerateGrid(true)}
+              className='bg-gray-700 px-1 py-1 rounded-lg text-sm w-full disabled:bg-gray-400'>
+                Weighted
             </button>
             <button
-                className='bg-gray-700 px-2 py-1 rounded-lg text-md w-full'>
+              disabled={!weighted}
+              onClick={() => handleGenerateGrid(false)}
+              className='bg-gray-700 px-1 py-1 rounded-lg text-sm w-full disabled:bg-gray-400'>
                     UnWeighted
             </button>
         </div>
 
+        {/* Generate Boundary */}
         <div className='flex flex-col space-y-2'>
         <select
           disabled={true}
-          className='bg-gray-700 px-2 py-1 rounded-lg text-md'>
-          <option>Horizontal Division</option>
-          <option>Vertical Division</option>
+          className='bg-gray-700 px-1 py-1 rounded-lg text-sm'>
+          <option>Horiz Division</option>
+          <option>Vert Division</option>
           <option>Flappy Bird</option>
         </select>
         <button 
           disabled={true}
-          className='bg-gray-700 px-2 py-1 rounded-lg text-md'>Generate</button>
+          className='bg-gray-700 px-1 py-1 rounded-lg text-sm'>Generate</button>
         </div>
 
+        {/* Generate Path */}
         <div className='flex flex-col space-y-2'>
         <select
           value={selectedAlgo}
           onChange={(e) => setSelectedAlgo(e.target.value)}
-          className='bg-gray-700 px-2 py-1 rounded-lg text-md'>
-          <option value={'none'} disabled={true}>Select an algo</option>
+          className='bg-gray-700 px-1 py-1 rounded-lg text-sm'>
+          <option value={'none'} disabled={true}>algo</option>
           <option value={'BFS'} disabled={weighted}>BFS</option>
           <option value={'DFS'} disabled={weighted}>DFS</option>
           <option value={'dijikstra'} disabled={!weighted}>Dijksta</option>
           <option value={'A*'} disabled={!weighted}>A*</option>
         </select>
         <button 
-        //   onClick={() => handleFind(selectedAlgo)}
+          onClick={() => handleFind(selectedAlgo)}
           disabled={selectedAlgo === 'none'}
-          className='bg-gray-700 px-2 py-1 rounded-lg text-md'>Find!</button>
+          className='bg-gray-700 px-1 py-1 rounded-lg text-sm'>Find!</button>
         </div>
         
     </div>
