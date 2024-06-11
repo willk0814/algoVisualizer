@@ -22,6 +22,8 @@ export default function PathfindingContainer() {
     weighted: false
   })
 
+  const [width, setWidth] = useState()
+
   // SV to toggle mobile controls
   const [showMobile, setShowMobile] = useState(false)
 
@@ -102,7 +104,9 @@ export default function PathfindingContainer() {
       const w = window.innerWidth
       let cols = 0
 
-      console.log(w)
+      if (w === width){
+        return
+      }
 
       if (w >= 1140){
         cols = 35
@@ -123,11 +127,11 @@ export default function PathfindingContainer() {
         setShowMobile(true)
         cols = 15
       }
-
-      if (cols !== gridState.cols){
-        console.log(`Generating a new grid with cols: ${cols}`)
-        generateNewGrid(gridState.weighted, cols) 
-      }
+      
+      console.log(`Generating a new grid with cols: ${cols}`)
+      setWidth(w)
+      generateNewGrid(gridState.weighted, cols) 
+      
     }
 
     window.addEventListener('resize', handleResize)
