@@ -20,6 +20,7 @@ export default function PathfinderControls({
     useEffect(() => {
       setSelectedAlgo('none')
     }, [weighted])
+
   return (
     <motion.div
       variants={{

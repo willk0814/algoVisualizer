@@ -6,6 +6,7 @@ import GridCell from './GridCell'
 import { generateGrid, boundaryDriver, pathfindingDriver } from '@/app/logic/pathfindingLogic/pathfindingLogic'
 
 import { motion } from 'framer-motion'
+import MobilePathfindingControls from './MobilePathfindingControls'
 
 
 export default function PathfindingContainer() {
@@ -20,6 +21,9 @@ export default function PathfindingContainer() {
     ending_coords: [],
     weighted: false
   })
+
+  // SV to toggle mobile controls
+  const [showMobile, setShowMobile] = useState(false)
 
   // Generate animation sequence based on boundary
   const generateBoundaryPattern = (boundaryPattern) => {
@@ -69,12 +73,17 @@ export default function PathfindingContainer() {
   }
 
   // Function to generate a new grid || bool: weight -> new grid
-  const generateNewGrid = (weighted) => {
+  const generateNewGrid = (weighted, cols) => {
+    if (!cols){
+      cols = gridState.cols
+    }
+
     // generate a new grid according to changed weight value
-    const {tmpGrid, starting_coords, ending_coords, gridMap} = generateGrid(gridState.rows, gridState.cols, weighted)
+    const {tmpGrid, starting_coords, ending_coords, gridMap} = generateGrid(gridState.rows, cols, weighted)
 
     setGridState(prevGridState => ({
       ...prevGridState,
+      cols: cols,
       grid: tmpGrid,
       gridMap: gridMap,
       weighted: weighted,
@@ -85,11 +94,45 @@ export default function PathfindingContainer() {
 
   // Generate a new grid on mount
   useEffect(() => {
-    generateNewGrid(gridState.weighted)
+    generateNewGrid(gridState.weighted, gridState.cols)
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth
+      let cols = 0
+
+      console.log(w)
+
+      if (w >= 1140){
+        cols = 35
+        setShowMobile(false)
+      } else if (w < 1140 && w >= 930){
+        cols = 25
+        setShowMobile(false)
+      } else if (w < 930 && w >= 830){
+        setShowMobile(true)
+        cols = 35
+      } else if (w < 830 && w >= 600){
+        setShowMobile(true)
+        cols = 25
+      } else if (w < 600){
+        setShowMobile(true)
+        cols = 20
+      }
+
+      console.log(`Generating a new grid with cols: ${cols}`)
+      generateNewGrid(gridState.weighted, cols)
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-full items-center justify-start pt-[3rem] bg-[#121212]'>
+    <div className='flex flex-col w-full h-full items-center justify-center bg-[#121212]'>
         
         {/* Title */}
         <motion.h1 
@@ -104,15 +147,20 @@ export default function PathfindingContainer() {
           initial='initial'
           animate='animate'
           exit='initial'
-          className='text-6xl my-4'>Pathfinder</motion.h1>
+          className='text-6xl'>Pathfinder</motion.h1>
+
+        {showMobile && 
+          <MobilePathfindingControls 
+            weighted={gridState.weighted}
+          />}
           
         <div className='flex flex-row'>
             {/* Controls Container */}
-            <PathfinderControls 
+            {!showMobile && <PathfinderControls 
               weighted={gridState.weighted}
               handleGenerateGrid={generateNewGrid} 
               handleGenerateBoundary={generateBoundaryPattern}
-              handleFind={generatePath}/>
+              handleFind={generatePath}/>}
             
             {/* Grid Container */}
             <motion.div 
