@@ -101,7 +101,7 @@ export default function PathfindingContainer() {
 
   useEffect(() => {
     const handleResize = () => {
-      const w = window.innerWidth
+      const w = window.innerWidth()
       let cols = 0
 
       if (w === width){
