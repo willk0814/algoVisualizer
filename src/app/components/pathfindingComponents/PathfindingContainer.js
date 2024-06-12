@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PathfinderControls from './PathfinderControls'
 import GridCell from './GridCell'
 import { generateGrid, boundaryDriver, pathfindingDriver } from '@/app/logic/pathfindingLogic/pathfindingLogic'
@@ -22,7 +22,8 @@ export default function PathfindingContainer() {
     weighted: false
   })
 
-  const [width, setWidth] = useState()
+  const [width, setWidth] = useState(window.innerWidth)
+  const prevWidthRef = useRef()
 
   // SV to toggle mobile controls
   const [showMobile, setShowMobile] = useState(false)
@@ -104,8 +105,10 @@ export default function PathfindingContainer() {
       const w = window.innerWidth
       let cols = 0
 
+      const prevWidth = prevWidthRef.current
+
       // equality?
-      console.log(`Current, Prior: ${w}, ${width}, Equality: ${w === width}`)
+      console.log(`Current, Prior: ${w}, ${prevWidth}, Equality: ${w === prevWidth}`)
     
       if (w >= 1140){
         cols = 35
@@ -127,6 +130,7 @@ export default function PathfindingContainer() {
         cols = 15
       }
       setWidth(w)
+      prevWidth.current = w
       generateNewGrid(gridState.weighted, cols) 
     
     }
