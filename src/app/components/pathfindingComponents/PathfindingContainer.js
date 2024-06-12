@@ -22,7 +22,7 @@ export default function PathfindingContainer() {
     weighted: false
   })
 
-  const [width, setWidth] = useState(window.innerWidth)
+  // const [width, setWidth] = useState(window.innerWidth)
   const prevWidthRef = useRef()
 
   // SV to toggle mobile controls
@@ -129,7 +129,7 @@ export default function PathfindingContainer() {
         setShowMobile(true)
         cols = 15
       }
-      setWidth(w)
+      // setWidth(w)
       prevWidth.current = w
       generateNewGrid(gridState.weighted, cols) 
     
