@@ -130,7 +130,7 @@ export default function PathfindingContainer() {
         cols = 15
       }
       // setWidth(w)
-      prevWidth.current = w
+      prevWidthRef.current = w
       generateNewGrid(gridState.weighted, cols) 
     
     }
