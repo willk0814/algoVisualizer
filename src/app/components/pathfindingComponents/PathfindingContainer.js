@@ -110,29 +110,34 @@ export default function PathfindingContainer() {
       // equality?
       console.log(`Current, Prior: ${w}, ${prevWidth}, Equality: ${w === prevWidth}`)
     
-      if (w >= 1140){
-        cols = 35
-        setShowMobile(false)
-      } else if (w < 1140 && w >= 930){
-        cols = 25
-        setShowMobile(false)
-      } else if (w < 930 && w >= 830){
-        setShowMobile(true)
-        cols = 35
-      } else if (w < 830 && w >= 600){
-        setShowMobile(true)
-        cols = 25
-      } else if (w < 600  && w >= 400){
-        setShowMobile(true)
-        cols = 20
-      } else if (w < 400){
-        setShowMobile(true)
-        cols = 15
+      // check to see if prevWidth === current width
+      if (prevWidth === w){
+        return
+      } else {
+
+        if (w >= 1140){
+          cols = 35
+          setShowMobile(false)
+        } else if (w < 1140 && w >= 930){
+          cols = 25
+          setShowMobile(false)
+        } else if (w < 930 && w >= 830){
+          setShowMobile(true)
+          cols = 35
+        } else if (w < 830 && w >= 600){
+          setShowMobile(true)
+          cols = 25
+        } else if (w < 600  && w >= 400){
+          setShowMobile(true)
+          cols = 20
+        } else if (w < 400){
+          setShowMobile(true)
+          cols = 15
+        }
+        
+        prevWidthRef.current = w
+        generateNewGrid(gridState.weighted, cols) 
       }
-      // setWidth(w)
-      prevWidthRef.current = w
-      generateNewGrid(gridState.weighted, cols) 
-    
     }
 
     window.addEventListener('resize', handleResize)
