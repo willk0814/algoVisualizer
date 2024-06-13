@@ -95,51 +95,82 @@ export default function PathfindingContainer() {
     }))
   }
 
+  // Function to set the number of columns when the window is resized
+  const handleResize = () => {
+    const w = window.innerWidth
+    const prevWidth = prevWidthRef.current
+    
+    // check to see if prevWidth === current width
+    if (prevWidth === w && gridState.cols === compute_cols(w).cols){
+      return
+    } else {
+      const { cols, mobile } = compute_cols(w)
+      
+      setShowMobile(mobile)
+      prevWidthRef.current = w
+      generateNewGrid(gridState.weighted, cols) 
+    }
+  }
+
+  const compute_cols = (width) => {
+
+    const cols = {
+      'group_1': {
+        lower_bound: 0,
+        upper_bound: 400,
+        cols: 15,
+        mobile: true
+      },
+      'group_2': {
+        lower_bound: 400,
+        upper_bound: 600,
+        cols: 20,
+        mobile: true
+      },
+      'group_3': {
+        lower_bound: 600,
+        upper_bound: 830,
+        cols: 25,
+        mobile: true
+      },
+      'group_4': {
+        lower_bound: 830,
+        upper_bound: 930,
+        cols: 35,
+        mobile: true
+      },
+      'group_5': {
+        lower_bound: 930,
+        upper_bound: 1140,
+        cols: 25,
+        mobile: false
+      },
+      'group_6': {
+        lower_bound: 1140,
+        upper_bound: Infinity,
+        cols: 35,
+        mobile: false
+      },
+    }
+
+    const cols_keys = Object.keys(cols);
+    for (let i = 0; i < cols_keys.length; i++) {
+      const current_group = cols[cols_keys[i]];
+      if (width >= current_group.lower_bound && width < current_group.upper_bound) {
+        return {
+          cols: current_group.cols, 
+          mobile: current_group.mobile};
+      }
+    }
+    return {cols: null, mobile: null}
+  }
+
   // Generate a new grid on mount
   useEffect(() => {
     generateNewGrid(gridState.weighted, gridState.cols)
   }, [])
 
   useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth
-      let cols = 0
-
-      const prevWidth = prevWidthRef.current
-
-      // equality?
-      console.log(`Current, Prior: ${w}, ${prevWidth}, Equality: ${w === prevWidth}`)
-    
-      // check to see if prevWidth === current width
-      if (prevWidth === w){
-        return
-      } else {
-
-        if (w >= 1140){
-          cols = 35
-          setShowMobile(false)
-        } else if (w < 1140 && w >= 930){
-          cols = 25
-          setShowMobile(false)
-        } else if (w < 930 && w >= 830){
-          setShowMobile(true)
-          cols = 35
-        } else if (w < 830 && w >= 600){
-          setShowMobile(true)
-          cols = 25
-        } else if (w < 600  && w >= 400){
-          setShowMobile(true)
-          cols = 20
-        } else if (w < 400){
-          setShowMobile(true)
-          cols = 15
-        }
-        
-        prevWidthRef.current = w
-        generateNewGrid(gridState.weighted, cols) 
-      }
-    }
-
     window.addEventListener('resize', handleResize)
     handleResize()
 
@@ -147,7 +178,7 @@ export default function PathfindingContainer() {
   }, [])
 
   return (
-    <div className='flex flex-col w-full min-h-screen items-center justify-start bg-[#121212]'>
+    <div className='flex flex-col w-full min-h-[100vh] items-center justify-start bg-[#121212]'>
         
         {/* Title */}
         <motion.h1 

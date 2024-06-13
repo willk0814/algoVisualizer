@@ -10,6 +10,7 @@ import InfoBlock from './InfoBlock'
 import { FaPause } from "react-icons/fa";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { FaAngleDoubleRight } from "react-icons/fa";
+import MobileSortingControls from './MobileSortingControls'
 
 
 
@@ -17,10 +18,13 @@ export default function SortingContainer() {
 
   const [displayArray, setDisplayArray] = useState([])
   const [displayInfo, setDisplayInfo] = useState([])
+  const [arrayLength, setArrayLength] = useState(50)
+
+  const [showMobileControls, setShowMobileControls] = useState(false)
 
 
   const generateNewArray = () => {
-    const tmpArray = generateArray(50, 100)
+    const tmpArray = generateArray(arrayLength, 80)
     setDisplayArray(tmpArray)
   }
 
@@ -112,13 +116,40 @@ export default function SortingContainer() {
   }
 
   useEffect(() => {
-    const tmpArray = generateArray(50, 60)
+    generateNewArray()
+  }, [arrayLength])
 
-    setDisplayArray(tmpArray)
+  const handleResize = () => {
+    const w = window.innerWidth
+
+    console.log(`Current width: ${w}`)
+
+    // toggle mobile controls
+    if (w < 900){
+      setShowMobileControls(true)
+    } else {
+      setShowMobileControls(false)
+    }
+
+    // change array length
+    if (w > 800){
+      setArrayLength(50)
+    } else if (w <= 800 && w > 500){
+      setArrayLength(35)
+    } else if (w <= 480){
+      setArrayLength(25)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (
-    <div className='flex flex-col w-full h-full pt-20 justify-start items-center bg-[#121212]'>
+    <div className='flex flex-col w-full justify-center items-center bg-[#121212]'>
         <motion.h1 
           variants={{
             initial: { opacity: 0, y: '-10px'},
@@ -133,11 +164,17 @@ export default function SortingContainer() {
           exit='initial'
           className='text-6xl my-4'>Sorter</motion.h1>
 
+        {showMobileControls && 
+          <MobileSortingControls
+            handleGenerateArray={generateNewArray}
+            handleSort={handleSort} />}
+
         <div className='flex flex-row h-[75vh]'>
           {/* Controls */}
-          <SortingControls 
-            handleGenerateArray={generateNewArray}
-            handleSort={handleSort}/>
+          {!showMobileControls && 
+            <SortingControls 
+              handleGenerateArray={generateNewArray}
+              handleSort={handleSort}/>}
           
           {/* Array */}
           <motion.div
@@ -151,7 +188,7 @@ export default function SortingContainer() {
             }}
             initial='initial'
             animate='animate'
-            className='flex flex-row space-x-1 border-2 border-gray-600 rounded-lg p-2'>
+            className='flex flex-row space-x-1 p-2'>
               {displayArray.map((element, indx) => {
                 const {value, status} = element
                 return(
@@ -162,8 +199,8 @@ export default function SortingContainer() {
 
           
           {/* Information & Playback Controls Column*/}
-          <div className='flex flex-col'>
-            {/* Information Container */}
+          {/* Information Container */}
+          {/* <div className='flex flex-col'>
             <motion.div 
               className='flex flex-col flex-1 border-2 border-gray-600 rounded-lg p-2'
               variants={{
@@ -186,10 +223,10 @@ export default function SortingContainer() {
                     )
                   })}
               </div>
-            </motion.div>
+            </motion.div> */}
               
             {/* Playback Controls Container */}
-            <motion.div 
+            {/* <motion.div 
               className='flex flex-col border-2 border-gray-600 rounded-lg flex-1 space-y-2 justify-center'
               variants={{
                 initial: { opacity: 0, x: '10px' },
@@ -219,7 +256,7 @@ export default function SortingContainer() {
             </motion.div>
           
           
-          </div>
+          </div> */}
 
         </div>
     </div>

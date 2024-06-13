@@ -19,7 +19,7 @@ export default function SortingControls({ handleGenerateArray, handleSort }) {
             }}
             initial='initial'
             animate='animate'
-            className='flex flex-col justify-start space-y-3 p-2 border-2 border-gray-600 rounded-lg'>
+            className='flex flex-col justify-start space-y-3 p-2'>
 
             <div className='flex flex-col space-y-1'>
                 <button

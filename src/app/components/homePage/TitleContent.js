@@ -15,14 +15,15 @@ export default function TitleContent() {
   return (
         <motion.div 
             className="w-[95vw] max-w-[800px] flex flex-col space-y-4"
+            variants={{
+              initial: { opacity: 0, y: '50px'},
+              animate: { opacity: 1, y: 0}
+            }}
             initial='initial'
-            animate='animate'
-            transition={{ staggerChildren: 0.1 }}>
+            animate='animate'>
 
           {/* Title */}
           <motion.h1
-            initial = {{ opacity: 0, y: '25px'}}
-            animate = {{ opacity: 1, y: 0 }}
             className="text-[1.6rem] sm:text-6xl text-[#E8E8E8] text-center">
             Algorithm Visualizer
           </motion.h1>
@@ -31,17 +32,13 @@ export default function TitleContent() {
             
             <div className="flex flex-col justify-between m-2 space-y-2">
                 <motion.p 
-                    className="text-[#A3BBAD] w-full max-w-[400px]"
-                    initial = {{ opacity: 0, y: '25px'}}
-                    animate = {{ opacity: 1, y: 0 }}>
+                    className="text-[#A3BBAD] w-full max-w-[400px]">
                         Welcome and thank you for checking out this project.  I built this while studying for technical interviews because I wanted a way to visualize the algorithms that I was using.  I hope you enjoy using it and take some value from it!  Don't hesitate to contact me with any suggestions or feedback
                 </motion.p>
 
               <div className="flex flex-row justify-center space-x-2">
                     <motion.div
-                        className="bg-[#A3BBAD] rounded-md text-[#121212] text-lg w-[50%] flex items-center justify-center"
-                        initial = {{ opacity: 0, y: '25px'}}
-                        animate = {{ opacity: 1, y: 0 }}>
+                        className="bg-[#A3BBAD] rounded-md text-[#121212] text-lg w-[50%] flex items-center justify-center">
                         <Link
                             className='w-full p-3 flex items-center justify-center'
                             href={'/pathfinding'}>
@@ -50,9 +47,7 @@ export default function TitleContent() {
                     </motion.div>
                 
                     <motion.div
-                        className="bg-[#A3BBAD] rounded-md text-[#121212] text-lg w-[50%] flex items-center justify-center"
-                        initial = {{ opacity: 0, y: '25px'}}
-                        animate = {{ opacity: 1, y: 0 }}>
+                        className="bg-[#A3BBAD] rounded-md text-[#121212] text-lg w-[50%] flex items-center justify-center">
                             <Link
                                 className='w-full p-3 flex items-center justify-center'
                                 href={'/sorting'}>
@@ -63,10 +58,7 @@ export default function TitleContent() {
               </div>
             </div>
             
-            <motion.div 
-              initial = {{ opacity: 0, y: '25px'}}
-              animate = {{ opacity: 1, y: 0 }}
-              transition={{ when: 'beforeChildren', staggerChildren: 0.2 }}
+            <motion.div
               className="rounded-md bg-[#A3BBAD] p-2 space-y-2 m-2 flex flex-col">
                 <Image 
                     alt='Failed to Load'
@@ -82,9 +74,7 @@ export default function TitleContent() {
                     target='_blank'
                     rel='noreferrer'
                     whileHover = {{boxShadow: '0 0 10px 5px rgba(18, 18, 18, 0.5)'}}
-                    className="rounded-md"
-                    initial = {{ opacity: 0 }}
-                    animate = {{ opacity: 1 }}>
+                    className="rounded-md">
                     <AiFillGithub size={35} color="#121212"/>
                   </motion.a>
 
@@ -93,9 +83,7 @@ export default function TitleContent() {
                     target='_blank'
                     rel='noreferrer'
                     whileHover = {{boxShadow: '0 0 10px 5px rgba(18, 18, 18, 0.5)'}}
-                    className="rounded-md"
-                    initial = {{ opacity: 0 }}
-                    animate = {{ opacity: 1 }}>
+                    className="rounded-md">
                     <FaLinkedinIn size={35} color="#121212"/>
                   </motion.a>
 
@@ -104,9 +92,7 @@ export default function TitleContent() {
                     target='_blank'
                     rel='noreferrer'
                     whileHover = {{boxShadow: '0 0 10px 5px rgba(18, 18, 18, 0.5)'}}
-                    className="rounded-md"
-                    initial = {{ opacity: 0 }}
-                    animate = {{ opacity: 1 }}>
+                    className="rounded-md">
                     <CgWebsite size={35} color="#121212"/>
                   </motion.a>
                 </motion.div>
