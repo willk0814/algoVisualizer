@@ -12,9 +12,9 @@ export default function SortingControls({ handleGenerateArray, handleSort }) {
     return (
         <motion.div
             variants={{
-                initial: { opacity: 0, x: '-10px'},
-                animate: { opacity: 1, x: 0,
-                    transition: { delay: 0.5 }
+                initial: { opacity: 0, y: '20px'},
+                animate: { opacity: 1, y: 0,
+                    transition: { delay: 0.3 }
             }
             }}
             initial='initial'

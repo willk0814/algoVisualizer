@@ -1,11 +1,24 @@
+'use client'
+
 import React from 'react'
 import ArrayBar from './ArrayBar'
+
+import { animate, motion } from 'framer-motion'
 
 export default function MobileSortingControls({
     handleGenerateArray, handleSort
 }) {
   return (
-    <div className='flex flex-col space-y-2'>
+    <motion.div 
+        className='flex flex-col space-y-2'
+        variants={{
+            initial: { opacity: 0 },
+            animate: { opacity: 1, 
+                transition: { delay: 0.3 }
+            }
+        }}
+        initial='initial'
+        animate='animate'>
 
         <div className='flex flex-row space-x-3 items-end'>
             
@@ -54,6 +67,6 @@ export default function MobileSortingControls({
                 </div>
             </div>
         
-    </div>
+    </motion.div>
   )
 }

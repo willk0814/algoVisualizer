@@ -155,7 +155,7 @@ export default function SortingContainer() {
             initial: { opacity: 0, y: '-10px'},
             animate: { opacity: 1, y: 0,
               transition: {
-                delay: 0.5
+                delay: 0.1
               }
              }
           }}
@@ -179,10 +179,10 @@ export default function SortingContainer() {
           {/* Array */}
           <motion.div
             variants={{
-              initial: { opacity: 0, x: '10px'},
-              animate: { opacity: 1, x: 0,
+              initial: { opacity: 0, y: '20px'},
+              animate: { opacity: 1, y: 0,
                 transition: {
-                  delay: 0.5
+                  delay: 0.7
                 }
               }
             }}

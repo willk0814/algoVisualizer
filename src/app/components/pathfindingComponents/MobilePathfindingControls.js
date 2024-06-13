@@ -1,4 +1,7 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 
 export default function MobilePathfindingControls({ 
   weighted, handleGenerateGrid,
@@ -10,7 +13,16 @@ export default function MobilePathfindingControls({
       setSelectedAlgo('none')
     }, [weighted])
   return (
-    <div className='flex space-x-2 pb-4'>
+    <motion.div 
+      className='flex space-x-2 pb-4'
+      variants={{
+        initial: { opacity: 0 },
+        animate: { opacity: 1,
+          transition: { delay: 0.3 }
+         }
+      }}
+      initial='initial'
+      animate='animate'>
 
         {/* Generate Grid */}
         <div className='flex flex-col space-y-2'>
@@ -60,6 +72,6 @@ export default function MobilePathfindingControls({
           className='bg-gray-700 px-1 py-1 rounded-lg text-sm'>Find!</button>
         </div>
         
-    </div>
+    </motion.div>
   )
 }

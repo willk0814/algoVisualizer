@@ -99,7 +99,7 @@ export default function PathfindingContainer() {
   const handleResize = () => {
     const w = window.innerWidth
     const prevWidth = prevWidthRef.current
-    
+
     // check to see if prevWidth === current width
     if (prevWidth === w && gridState.cols === compute_cols(w).cols){
       return
@@ -186,7 +186,7 @@ export default function PathfindingContainer() {
             initial: { opacity: 0, y: '-10px'},
             animate: { opacity: 1, y: 0,
               transition: {
-                delay: 0.5
+                delay: 0.1
               }
              }
           }}
@@ -214,10 +214,10 @@ export default function PathfindingContainer() {
             {/* Grid Container */}
             <motion.div 
               variants={{
-                initial: { opacity: 0, x: '10px'},
-                animate: { opacity: 1, x: 0,
+                initial: { opacity: 0, y: '20px'},
+                animate: { opacity: 1, y: 0,
                   transition: {
-                    delay: 0.5
+                    delay: 0.7
                   }
                  }
               }}
